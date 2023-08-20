@@ -28,6 +28,7 @@ jobs:
       - run:
           name: Test
           command: mvn integration-test
+      - codecov/upload
           
 
 # Invoke jobs via workflows
