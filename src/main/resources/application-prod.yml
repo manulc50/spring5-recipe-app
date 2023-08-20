@@ -1,0 +1,13 @@
+# Estas propiedades son para el perfil por "prod"
+
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/sfg_prod
+    username: sfg_prod_user
+    password: guru
+  jpa:
+    hibernate:
+      ddl-auto: validate # Indicamos a Hibernate que verifique o compruebe el esquema de la base de datos para que sea el esperado. No es buena idea que en Producción que Hibernate cree o modifique elementos de la base de datos de manera automática. Por esta razón, sólo le indicamos que verifique y no ponemos, por ejemplo "create" o "create-drop"
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+    database: mysql
+    show-sql: false # En el entorno de Producción no queremos visualizar por consola las consultas SQL que se realizan sobre la base de datos
