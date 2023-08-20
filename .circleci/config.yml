@@ -25,7 +25,12 @@ jobs:
       # Then run your tests!
       - run:
           name: Test
-          command: mvn integration-test
+          command: mvn integration-test cobertura:cobertura
+      # Send to CodeCov
+      - run:
+          name: CodeCov
+          command: bash <(curl -s https://codecov.io/bash)
+          
 
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/configuration-reference/#workflows
