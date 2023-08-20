@@ -1,1 +1,2 @@
 [![CircleCI](https://dl.circleci.com/status-badge/img/gh/manulc50/spring5-recipe-app/tree/main.svg?style=svg&circle-token=20492593e83c00eebff3f98780cc3c5d1d12985a)](https://dl.circleci.com/status-badge/redirect/gh/manulc50/spring5-recipe-app/tree/main)
+[![codecov](https://codecov.io/gh/manulc50/spring5-recipe-app/graph/badge.svg?token=7K5VXPOO65)](https://codecov.io/gh/manulc50/spring5-recipe-app)
