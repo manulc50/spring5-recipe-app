@@ -1,20 +1,20 @@
 package com.mlorenzo.spring5recipeapp.domain;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.Assert.assertEquals;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.Before;
+import org.junit.Test;
 
 public class CategoryTest {
 	Category category;
 	
-	@BeforeEach
-	void setUp() {
+	@Before
+	public void setUp() {
 		category = new Category();
 	}
 	
 	@Test
-	void getIdTest() {
+	public void getIdTest() {
 		Long idValue = 4L;
 		category.setId(idValue);
 		assertEquals(idValue, category.getId());

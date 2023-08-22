@@ -1,6 +1,6 @@
 package com.mlorenzo.spring5recipeapp.services;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -8,8 +8,8 @@ import static org.mockito.Mockito.when;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.Before;
+import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
@@ -26,15 +26,15 @@ public class UnitOfMeasureServiceImplTest {
 	UnitOfMeasureToUnitOfMeasureCommand unitOfMeasureToUnitOfMeasureCommand = new UnitOfMeasureToUnitOfMeasureCommand();    
 	UnitOfMeasureService service;
 	
-	@BeforeEach
-    void setUp() throws Exception {
+	@Before
+	public void setUp() throws Exception {
 		// Para poder usar Mockito en esta clase de pruebas
         MockitoAnnotations.initMocks(this); // Otra opción a esta línea es anotar la clase con @ExtendWith(MockitoExtension.class)
         service = new UnitOfMeasureServiceImpl(unitOfMeasureRepository, unitOfMeasureToUnitOfMeasureCommand);
     }
 	
 	@Test
-    void listAllUomsTest() throws Exception {
+	public void listAllUomsTest() throws Exception {
         //given
         Set<UnitOfMeasure> unitOfMeasures = new HashSet<UnitOfMeasure>();
         UnitOfMeasure uom1 = new UnitOfMeasure();

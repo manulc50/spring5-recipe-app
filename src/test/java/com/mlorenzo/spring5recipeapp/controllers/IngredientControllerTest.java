@@ -14,8 +14,8 @@ import java.util.HashSet;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.any;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.Before;
+import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -45,15 +45,15 @@ public class IngredientControllerTest {
 
     MockMvc mockMvc;
 
-    @BeforeEach
-    void setUp() throws Exception {
+    @Before
+    public void setUp() throws Exception {
     	//Para poder usar Mockito en esta clase de pruebas
         MockitoAnnotations.initMocks(this); // Otra opción a esta línea es anotar la clase con @ExtendWith(MockitoExtension.class)
         mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
     }
 
     @Test
-    void listIngredientsTest() throws Exception {
+    public void listIngredientsTest() throws Exception {
         //given
         RecipeCommand recipeCommand = new RecipeCommand();
         when(recipeService.findRecipeCommandById(anyLong())).thenReturn(recipeCommand);
@@ -68,7 +68,7 @@ public class IngredientControllerTest {
     }
     
     @Test
-    void showIngredientTest() throws Exception {
+    public void showIngredientTest() throws Exception {
         //given
         IngredientCommand ingredientCommand = new IngredientCommand();
         when(ingredientService.findByRecipeIdAndIngredientId(anyLong(), anyLong())).thenReturn(ingredientCommand);
@@ -83,7 +83,7 @@ public class IngredientControllerTest {
     }
     
     @Test
-    void newIngredientFormTest() throws Exception {
+    public void newIngredientFormTest() throws Exception {
         //given
         RecipeCommand recipeCommand = new RecipeCommand();
         recipeCommand.setId(1L);
@@ -101,7 +101,7 @@ public class IngredientControllerTest {
     }
     
     @Test
-    void updateIngredientFormTest() throws Exception {
+    public void updateIngredientFormTest() throws Exception {
         //given
         IngredientCommand ingredientCommand = new IngredientCommand();
         when(ingredientService.findByRecipeIdAndIngredientId(anyLong(), anyLong())).thenReturn(ingredientCommand);
@@ -119,7 +119,7 @@ public class IngredientControllerTest {
     }
     
     @Test
-    void saveOrUpdateTest() throws Exception {
+    public void saveOrUpdateTest() throws Exception {
         //given
         IngredientCommand command = new IngredientCommand();
         command.setId(3L);
@@ -138,7 +138,7 @@ public class IngredientControllerTest {
     }
     
     @Test
-    void deleteIngredientTest() throws Exception {
+    public void deleteIngredientTest() throws Exception {
     	//when
     	mockMvc.perform(get("/recipe/2/ingredient/3/delete"))
     		   .andExpect(status().is3xxRedirection())

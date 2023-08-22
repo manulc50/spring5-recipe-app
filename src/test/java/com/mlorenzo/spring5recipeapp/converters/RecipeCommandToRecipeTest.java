@@ -1,8 +1,5 @@
 package com.mlorenzo.spring5recipeapp.converters;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-
 import com.mlorenzo.spring5recipeapp.commands.CategoryCommand;
 import com.mlorenzo.spring5recipeapp.commands.IngredientCommand;
 import com.mlorenzo.spring5recipeapp.commands.NotesCommand;
@@ -10,7 +7,10 @@ import com.mlorenzo.spring5recipeapp.commands.RecipeCommand;
 import com.mlorenzo.spring5recipeapp.domain.Difficulty;
 import com.mlorenzo.spring5recipeapp.domain.Recipe;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.Assert.*;
+
+import org.junit.Before;
+import org.junit.Test;
 
 public class RecipeCommandToRecipeTest {
     public static final Long RECIPE_ID = 1L;
@@ -31,7 +31,7 @@ public class RecipeCommandToRecipeTest {
     RecipeCommandToRecipe converter;
 
 
-    @BeforeEach
+    @Before
     public void setUp() throws Exception {
         converter = new RecipeCommandToRecipe(new CategoryCommandToCategory(),
                 new IngredientCommandToIngredient(new UnitOfMeasureCommandToUnitOfMeasure()),

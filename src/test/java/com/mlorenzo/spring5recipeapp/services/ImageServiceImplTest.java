@@ -1,15 +1,13 @@
 package com.mlorenzo.spring5recipeapp.services;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.junit.Assert.*;
+import static org.mockito.Mockito.*;
 import static org.mockito.ArgumentMatchers.anyLong;
 
 import java.util.Optional;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.Before;
+import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -28,14 +26,14 @@ public class ImageServiceImplTest {
 	@InjectMocks // Esta anotación crea una instancia del servicio "ImageService" e inyecta el Mock del repositorio "recipeRepository"
     ImageServiceImpl imageService;
 	
-	@BeforeEach
-    void setUp() throws Exception {
+	@Before
+	public void setUp() throws Exception {
 		// Para poder usar Mockito en esta clase de pruebas
         MockitoAnnotations.initMocks(this); // Otra opción a esta línea es anotar la clase con @ExtendWith(MockitoExtension.class)
     }
 	
 	@Test
-    void saveImageFile() throws Exception {
+	public void saveImageFile() throws Exception {
         //given
         Long id = 1L;
         MultipartFile multipartFile = new MockMultipartFile("imagefile", "testing.txt", "text/plain",

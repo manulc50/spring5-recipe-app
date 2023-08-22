@@ -1,12 +1,13 @@
 package com.mlorenzo.spring5recipeapp.converters;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 
 import com.mlorenzo.spring5recipeapp.commands.CategoryCommand;
 import com.mlorenzo.spring5recipeapp.domain.Category;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.Assert.*;
+
+import org.junit.Before;
+import org.junit.Test;
 
 public class CategoryCommandToCategoryTest {
     public static final Long ID_VALUE = 1L;
@@ -14,7 +15,7 @@ public class CategoryCommandToCategoryTest {
     
     CategoryCommandToCategory conveter;
 
-    @BeforeEach
+    @Before
     public void setUp() throws Exception {
         conveter = new CategoryCommandToCategory();
     }

@@ -1,12 +1,12 @@
 package com.mlorenzo.spring5recipeapp.converters;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-
 import com.mlorenzo.spring5recipeapp.commands.UnitOfMeasureCommand;
 import com.mlorenzo.spring5recipeapp.domain.UnitOfMeasure;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.Assert.*;
+
+import org.junit.Before;
+import org.junit.Test;
 
 public class UnitOfMeasureToUnitOfMeasureCommandTest {
     public static final String DESCRIPTION = "description";
@@ -14,7 +14,7 @@ public class UnitOfMeasureToUnitOfMeasureCommandTest {
 
     UnitOfMeasureToUnitOfMeasureCommand converter;
 
-    @BeforeEach
+    @Before
     public void setUp() throws Exception {
         converter = new UnitOfMeasureToUnitOfMeasureCommand();
     }

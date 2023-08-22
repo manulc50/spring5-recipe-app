@@ -1,6 +1,6 @@
 package com.mlorenzo.spring5recipeapp.services;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -9,8 +9,8 @@ import static org.mockito.ArgumentMatchers.any;
 
 import java.util.Optional;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.Before;
+import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
@@ -42,15 +42,15 @@ public class IngredientServiceImplTest {
         this.ingredientCommandToIngredient = new IngredientCommandToIngredient(new UnitOfMeasureCommandToUnitOfMeasure());
     }
     
-    @BeforeEach
-    void setUp() throws Exception {
+    @Before
+    public void setUp() throws Exception {
     	// Para poder usar Mockito en esta clase de pruebas
         MockitoAnnotations.initMocks(this); // Otra opción a esta línea es anotar la clase con @ExtendWith(MockitoExtension.class)
         ingredientService = new IngredientServiceImpl(recipeRepository,unitOfMeasureRepository,ingredientToIngredientCommand,ingredientCommandToIngredient);
     }
     
     @Test
-    void findByRecipeIdAndReceipeIdHappyPathTest() throws Exception {
+    public void findByRecipeIdAndReceipeIdHappyPathTest() throws Exception {
         Recipe recipe = new Recipe();
         recipe.setId(1L);
         Ingredient ingredient1 = new Ingredient();
@@ -72,7 +72,7 @@ public class IngredientServiceImplTest {
     }
     
     @Test
-    void saveRecipeCommandTest() throws Exception {
+    public void saveRecipeCommandTest() throws Exception {
         //given
         IngredientCommand command = new IngredientCommand();
         command.setId(3L);
@@ -93,7 +93,7 @@ public class IngredientServiceImplTest {
     }
     
     @Test
-    void deleteByIdTest() throws Exception {
+    public void deleteByIdTest() throws Exception {
     	//given
         Long idToDelete = Long.valueOf(2L);
         Long idRecipe = 3L;

@@ -2,7 +2,7 @@ package com.mlorenzo.spring5recipeapp.controllers;
 
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoInteractions;
+import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
@@ -10,12 +10,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
+
+import org.junit.Before;
+import org.junit.Test;
+
 import static org.mockito.ArgumentMatchers.anyLong;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -41,8 +43,8 @@ public class ImageControllerTest {
 	
 	MockMvc mockMvc;
 	 
-	@BeforeEach
-	void setUp() throws Exception {
+	@Before
+	public void setUp() throws Exception {
 		// Para poder usar Mockito en esta clase de pruebas
 		MockitoAnnotations.initMocks(this); // Otra opción a esta línea es anotar la clase con @ExtendWith(MockitoExtension.class)
 	    mockMvc = MockMvcBuilders.standaloneSetup(controller)
@@ -51,7 +53,7 @@ public class ImageControllerTest {
 	}
 
     @Test
-    void getImageFormTest() throws Exception {
+    public void getImageFormTest() throws Exception {
         //given
         RecipeCommand command = new RecipeCommand();
         command.setId(1L);
@@ -68,15 +70,15 @@ public class ImageControllerTest {
     }
     
     @Test
-    void getImageNumberFormatExceptionTest() throws Exception {
+    public void getImageNumberFormatExceptionTest() throws Exception {
         mockMvc.perform(get("/recipe/asdf/recipeimage"))
                 .andExpect(status().isBadRequest())
                 .andExpect(view().name("400error"));
-        verifyNoInteractions(recipeService);
+        verifyZeroInteractions(recipeService);
     }
 
     @Test
-    void handleImagePostTest() throws Exception {
+    public void handleImagePostTest() throws Exception {
     	//given
         MockMultipartFile multipartFile =
                 new MockMultipartFile("imagefile", "testing.txt", "text/plain",
@@ -92,7 +94,7 @@ public class ImageControllerTest {
     }
     
     @Test
-    void renderImageFromDBTest() throws Exception {
+    public void renderImageFromDBTest() throws Exception {
         //given
         RecipeCommand command = new RecipeCommand();
         command.setId(1L);

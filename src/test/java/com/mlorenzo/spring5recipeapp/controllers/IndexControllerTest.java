@@ -1,7 +1,5 @@
 package com.mlorenzo.spring5recipeapp.controllers;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -13,10 +11,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import java.util.HashSet;
 import java.util.Set;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.eq;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.Before;
+import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -39,14 +39,14 @@ public class IndexControllerTest {
 	@InjectMocks // Esta anotación crea una instancia del controlador "IndexController" e inyecta el Mock del servicio "recipeService" y el Mock del modelo "model"
 	IndexController indexController;
 	
-	@BeforeEach
-	void setUp() {
+	@Before
+	public void setUp() {
 		// Para poder usar Mockito en esta clase de pruebas
 		MockitoAnnotations.initMocks(this); // Otra opción a esta línea es anotar la clase con @ExtendWith(MockitoExtension.class)
 	}
 	
 	@Test
-	void getIndexPageMockMvcTest() throws Exception {
+	public void getIndexPageMockMvcTest() throws Exception {
 		MockMvc mockMvc = MockMvcBuilders.standaloneSetup(indexController).build();
 		mockMvc.perform(get("/"))
 			   .andExpect(status().isOk())
@@ -57,7 +57,7 @@ public class IndexControllerTest {
 	}
 	
 	@Test
-	void getIndexPageTest() {
+	public void getIndexPageTest() {
 		RecipeCommand recipeCommand1 = new RecipeCommand();
 		recipeCommand1.setId(1L);
 		RecipeCommand recipeCommand2 = new RecipeCommand();

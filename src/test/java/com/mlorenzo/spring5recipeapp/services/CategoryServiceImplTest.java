@@ -1,8 +1,6 @@
 package com.mlorenzo.spring5recipeapp.services;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.Assert.*;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
@@ -13,11 +11,11 @@ import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.junit.MockitoJUnitRunner;
 
 import com.mlorenzo.spring5recipeapp.commands.CategoryCommand;
 import com.mlorenzo.spring5recipeapp.converters.CategoryToCategoryCommand;
@@ -26,23 +24,22 @@ import com.mlorenzo.spring5recipeapp.exceptions.NotFoundException;
 import com.mlorenzo.spring5recipeapp.repositories.CategoryRepository;
 
 //Anotación para poder usar Mockito en esta clase de pruebas
-@ExtendWith(MockitoExtension.class) // Otra opción a esta anotación es usar la expresión o línea "MockitoAnnotations.initMocks(this);" en el método "setUp"
+@RunWith(MockitoJUnitRunner.class) // Otra opción a esta anotación es usar la expresión o línea "MockitoAnnotations.initMocks(this);" en el método "setUp"
 public class CategoryServiceImplTest {
 	
 	@Mock
     CategoryRepository categoryRepository;
 	
 	CategoryToCategoryCommand categoryToCategoryCommand = new CategoryToCategoryCommand();
-    
 	CategoryService service;
 	
-	@BeforeEach
-    void setUp() throws Exception {
+	@Before
+	public void setUp() throws Exception {
 		service = new CategoryServiceImpl(categoryRepository,categoryToCategoryCommand);
 	}
 	
 	@Test
-	void getCategoriesTest() {
+	public void getCategoriesTest() {
 		//given
 		Category cat1 = new Category();
 		cat1.setId(1L);
@@ -61,25 +58,23 @@ public class CategoryServiceImplTest {
 	}
 	
 	@Test
-    void getCategoryByIdTest() throws Exception {
+	public void getCategoryByIdTest() throws Exception {
         Category categoryReturned = new Category();
         categoryReturned.setId(1L);
         when(categoryRepository.findById(anyLong())).thenReturn(Optional.of(categoryReturned));
         CategoryCommand categoryCommand = service.getCategoryById(1L);
-        assertNotNull(categoryCommand, "Null recipe returned");
+        assertNotNull("Null recipe returned", categoryCommand);
         // Si no se indica el número de llamadas en el método "times", por defecto es 1
         verify(categoryRepository, times(1)).findById(anyLong());
         verify(categoryRepository, never()).findAll();
     }
 	
-	@Test
-    void getCategoryByIdNotFoundTest() {
+	@Test(expected = NotFoundException.class)
+	public void getCategoryByIdNotFoundTest() {
     	Optional<Category> categoryOptional = Optional.empty();
     	when(categoryRepository.findById(anyLong())).thenReturn(categoryOptional);
-    	assertThrows(NotFoundException.class, () -> {
-        	//should go boom
-    		service.getCategoryById(1L);
-        });
+        //should go boom
+    	service.getCategoryById(1L);
     	// Si no se indica el número de llamadas en el método "times", por defecto es 1
         verify(categoryRepository, times(1)).findById(anyLong());
     }

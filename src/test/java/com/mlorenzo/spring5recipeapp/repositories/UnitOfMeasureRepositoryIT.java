@@ -1,15 +1,18 @@
 package com.mlorenzo.spring5recipeapp.repositories;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.Assert.assertEquals;
 
 import java.util.Optional;
 
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import com.mlorenzo.spring5recipeapp.domain.UnitOfMeasure;
 
+@RunWith(SpringRunner.class)
 // Anotación que permite realizar pruebas de integración de la capa de repositorios que utilizan Spring Data JPA
 // Para ello, esta anotación configura Spring Data JPA por nosotros y utiliza una base de datos embebida(H2 en nuestro caso) para realizar las pruebas
 @DataJpaTest
@@ -20,13 +23,13 @@ public class UnitOfMeasureRepositoryIT {
 	UnitOfMeasureRepository uomRepository;
 	
 	@Test
-	void findByDescriptionTest() {
+	public void findByDescriptionTest() {
 		Optional<UnitOfMeasure> uomOptional = uomRepository.findByDescription("Teaspoon");
 		assertEquals("Teaspoon", uomOptional.get().getDescription());
 	}
 	
 	@Test
-	void findByDescriptionCupTest() {
+	public void findByDescriptionCupTest() {
 		Optional<UnitOfMeasure> uomOptional = uomRepository.findByDescription("Cup");
 		assertEquals("Cup", uomOptional.get().getDescription());
 	}

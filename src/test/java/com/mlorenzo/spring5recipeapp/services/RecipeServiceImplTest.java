@@ -1,20 +1,19 @@
 package com.mlorenzo.spring5recipeapp.services;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.mockito.ArgumentMatchers.anyLong;
 
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.Before;
+import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
@@ -42,8 +41,8 @@ public class RecipeServiceImplTest {
     RecipeToRecipeCommand recipeToRecipeCommand;
 	RecipeServiceImpl recipeService;
 	
-	@BeforeEach
-	void setUp() {
+	@Before
+	public void setUp() {
 		// Para poder usar Mockito en esta clase de pruebas
 		MockitoAnnotations.initMocks(this); // Otra opción a esta línea es anotar la clase con @ExtendWith(MockitoExtension.class)
 		recipeService = new RecipeServiceImpl(recipeRepository,recipeCommandToRecipe,recipeToRecipeCommand);
@@ -60,7 +59,7 @@ public class RecipeServiceImplTest {
 	}
 
 	@Test
-	void getRecipesTest() {
+	public void getRecipesTest() {
 		Recipe recipe1 = new Recipe();
 		recipe1.setId(1L);
 		Recipe recipe2 = new Recipe();
@@ -76,32 +75,30 @@ public class RecipeServiceImplTest {
 	}
 	
 	@Test
-    void getRecipeByIdTest() throws Exception {
+	public void getRecipeByIdTest() throws Exception {
         Recipe recipeReturned = new Recipe();
         recipeReturned.setId(1L);
         when(recipeRepository.findById(anyLong())).thenReturn(Optional.of(recipeReturned));
         RecipeCommand recipeCommand = recipeService.findRecipeCommandById(1L);
-        assertNotNull(recipeCommand, "Null recipe returned");
+        assertNotNull("Null recipe returned", recipeCommand);
         // Si no se indica el número de llamadas en el método "times", por defecto es 1
         verify(recipeRepository, times(1)).findById(anyLong());
         verify(recipeRepository, never()).findAll();
     }
 	
-	@Test
-    void getRecipeByIdNotFoundTest() {
+	@Test(expected = NotFoundException.class)
+	public void getRecipeByIdNotFoundTest() {
     	Optional<Recipe> recipeOptional = Optional.empty();
     	when(recipeRepository.findById(anyLong())).thenReturn(recipeOptional);
-    	assertThrows(NotFoundException.class, () -> {
-        	//should go boom
-    		recipeService.findRecipeCommandById(1L);
-        });
+        //should go boom
+    	recipeService.findRecipeCommandById(1L);
     	// Si no se indica el número de llamadas en el método "times", por defecto es 1
         verify(recipeRepository, times(1)).findById(anyLong());	
     }
 	
 
     @Test
-    void deleteByIdTest() throws Exception {
+    public void deleteByIdTest() throws Exception {
         Long idToDelete = Long.valueOf(2L);
         recipeService.deleteById(idToDelete);
         //no 'when' method, since method has void return type
