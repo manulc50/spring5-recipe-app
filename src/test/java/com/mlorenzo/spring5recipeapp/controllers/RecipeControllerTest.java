@@ -36,7 +36,6 @@ public class RecipeControllerTest {
     CategoryService categoryService;
 
     RecipeController controller;
-    
     MockMvc mockMvc;
 
     @Before

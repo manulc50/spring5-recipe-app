@@ -68,7 +68,7 @@
 	                                <h5>Prep Time:</h5>
 	                            </div>
 	                            <div class="col-md-3">
-	                                <p th:text="${recipe.prepTime} + ' min'">30 min</p>
+	                                <p th:if="${recipe.prepTime}" th:text="${recipe.prepTime} + ' min'">30 min</p>
 	                            </div>
 	                            <div class="col-md-3">
 	                                <h5>Difficulty:</h5>
@@ -82,7 +82,7 @@
 	                                <h5>Cooktime:</h5>
 	                            </div>
 	                            <div class="col-md-3">
-	                                <p th:text="${recipe.cookTime} + ' min'">30 min</p>
+	                                <p th:if="${recipe.cookTime}" th:text="${recipe.cookTime} + ' min'">30 min</p>
 	                            </div>
 	                            <div class="col-md-3">
 	                                <h5>Servings:</h5>
@@ -110,10 +110,10 @@
 	                <div class="panel panel-primary">
 	                    <div class="panel-heading">
 	                    	<div class="row">
-	                    		<div class="col-md-11">
+	                    		<div class="col-md-10">
 	                        		<h1 class="panel-title" >Ingredients</h1>
 	                        	</div>
-	                        	<div class="col-md-1">
+	                        	<div class="col-md-2">
                                 	<a class="btn btn-default" href="#" th:href="@{'/recipe/' + ${recipe.id} + '/ingredients'}" role="button">View</a>
                             	</div>
                             </div>

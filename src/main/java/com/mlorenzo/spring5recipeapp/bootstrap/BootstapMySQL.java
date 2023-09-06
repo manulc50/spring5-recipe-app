@@ -10,6 +10,7 @@ import com.mlorenzo.spring5recipeapp.domain.UnitOfMeasure;
 import com.mlorenzo.spring5recipeapp.repositories.CategoryRepository;
 import com.mlorenzo.spring5recipeapp.repositories.UnitOfMeasureRepository;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 // Si usamos Spring Boot como en este caso, una alternativa a implementar el método "public void onApplicationEvent(ContextRefreshedEvent event)" de la interfaz de Spring "ApplicationListener<ContextRefreshedEvent>", es implementar el método "public void run(String... args)" de la interfaz de Spring Boot "CommandLineRunner"
@@ -18,16 +19,12 @@ import lombok.extern.slf4j.Slf4j;
 // La interfaz CommandLineRunner es propia de Spring Boot
 
 @Slf4j
+@RequiredArgsConstructor
 @Component
 @Profile({"dev", "prod"}) // Esta clase sólo se tendrá en cuenta cuando arranque esta aplicación Spring Boot con el perfil "dev" o con el perfil "prod"
 public class BootstapMySQL implements ApplicationListener<ContextRefreshedEvent>{
 	private final CategoryRepository categoryRepository;
     private final UnitOfMeasureRepository unitOfMeasureRepository;
-
-    public BootstapMySQL(CategoryRepository categoryRepository, UnitOfMeasureRepository unitOfMeasureRepository) {
-        this.categoryRepository = categoryRepository;
-        this.unitOfMeasureRepository = unitOfMeasureRepository;
-    }
 
     @Override
     public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {

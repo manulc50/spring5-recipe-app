@@ -35,6 +35,7 @@
 	                    <p>Please Correct Errors Below</p>
 	                </div>
 	                <input type="hidden" th:field="*{id}"/>
+	                <input type="hidden" th:field="*{image}"/>
 	                <div class="pannel-group">
 	                    <div class="panel panel-primary">
 	                        <div class="panel-heading">
@@ -64,7 +65,7 @@
 	                                        <label>Cat 1</label>
 	                                    </div>
 	                                    <div class="radio" th:each="category:${categorySet}">
-	                                        <input type="checkbox" name="categories" th:value="${category.id}" th:field="*{categories}"/>
+	                                        <input type="checkbox" name="categories" th:value="${category.id}" th:field="*{categories}" th:checked="${recipe.getCategories().contains(category)}"/>
 	                                        <label th:text="${category.description}">Cat 2</label>
 	                                    </div>
 	                                </div>
@@ -130,13 +131,13 @@
 	                            </div>
 	                        </div>
 	                    </div>
-	                    <div class="panel panel-primary">
+	                    <div th:if="${recipe.id}" class="panel panel-primary">
 	                        <div class="panel-heading">
 	                            <div class="row">
-	                                <div class="col-md-11 ">
+	                                <div class="col-md-10 ">
 	                                    <h1 class="panel-title">Ingredients</h1>
 	                                </div>
-	                                <div class="col-md-1">
+	                                <div class="col-md-2">
                                     <a class="btn btn-default" href="#"
                                        th:href="@{'/recipe/' + ${recipe.id} + '/ingredients'}" role="button">View</a>
                                 </div>
@@ -164,8 +165,14 @@
 	                        </div>
 	                        <div class="panel-body">
 	                            <div class="row">
-	                                <div class="col-md-12 form-group">
-	                                    <textarea class="form-control" rows="3" th:field="*{directions}"></textarea></div>
+	                                <div class="col-md-12 form-group" th:class="${#fields.hasErrors('directions')} ? 'col-md-12 form-group has-error' : 'col-md-12 form-group'">
+	                                    <textarea class="form-control" rows="3" th:field="*{directions}" th:errorclass="has-error"></textarea>
+	                            		<span class="help-block" th:if="${#fields.hasErrors('directions')}">
+	                                        <ul>
+	                                            <li th:each="err : ${#fields.errors('directions')}" th:text="${err}"/>
+	                                        </ul>
+                                    	</span>
+                                    </div>
 	                            </div>
 	                        </div>
 	                    </div>

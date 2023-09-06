@@ -1,8 +1,7 @@
 package com.mlorenzo.spring5recipeapp.converters;
 
-import lombok.Synchronized;
+import lombok.RequiredArgsConstructor;
 import org.springframework.core.convert.converter.Converter;
-import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
 
 import com.mlorenzo.spring5recipeapp.commands.RecipeCommand;
@@ -13,21 +12,13 @@ import com.mlorenzo.spring5recipeapp.domain.Recipe;
 // En este caso, pasamos los datos de objetos de tipo Recipe a objetos de tipo RecipeCommand
 // La interfaz Converter de Spring Framework es una alternativa a usar la librería MapStruct
 
+@RequiredArgsConstructor
 @Component
 public class RecipeToRecipeCommand implements Converter<Recipe, RecipeCommand>{
     private final CategoryToCategoryCommand categoryConveter;
     private final IngredientToIngredientCommand ingredientConverter;
     private final NotesToNotesCommand notesConverter;
 
-    public RecipeToRecipeCommand(CategoryToCategoryCommand categoryConveter, IngredientToIngredientCommand ingredientConverter,
-                                 NotesToNotesCommand notesConverter) {
-        this.categoryConveter = categoryConveter;
-        this.ingredientConverter = ingredientConverter;
-        this.notesConverter = notesConverter;
-    }
-
-    @Synchronized
-    @Nullable
     @Override
     public RecipeCommand convert(Recipe source) {
         if (source == null) {

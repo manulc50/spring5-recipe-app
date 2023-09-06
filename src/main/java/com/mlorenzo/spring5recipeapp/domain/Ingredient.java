@@ -12,10 +12,12 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
+@NoArgsConstructor
 //El método "hasCode" que proporciona Lombok tiene alguna incompatibilidad con las relaciones JPA bidireccionales produciéndose un error de ejecución de la aplicación
 //Por esta razón, indicamos que se excluya la propiedad "recipe", que es la propiedad que establece la relación bidireccional, de los métodos "equals"(Si se quita del método "hasCode", también se tiene que quitar del método "equals". Ambos métodos van de la mano en Lombok) y "hasCode"
 //Sólo es necesario excluir la propiedad en un lado de la relación bidireccional, es decir, como ya lo hemos hecho en esta clase entidad "Ingredient", no hace falta excluir la propiedad "ingredients" de la clase entidad "Recipe"
@@ -54,20 +56,9 @@ public class Ingredient {
 	@ManyToOne
 	private Recipe recipe;
 	
-	public Ingredient() {
-		
-	}
-	
 	public Ingredient(String description, BigDecimal amount, UnitOfMeasure uom) {
 		this.description = description;
 		this.amount = amount;
 		this.uom = uom;
-	}
-	
-	public Ingredient(String description, BigDecimal amount, UnitOfMeasure uom, Recipe recipe) {
-		this.description = description;
-		this.amount = amount;
-		this.uom = uom;
-		this.recipe = recipe;
 	}
 }

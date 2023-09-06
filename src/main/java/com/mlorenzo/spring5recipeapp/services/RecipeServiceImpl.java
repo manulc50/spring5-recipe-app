@@ -12,20 +12,16 @@ import com.mlorenzo.spring5recipeapp.domain.Recipe;
 import com.mlorenzo.spring5recipeapp.exceptions.NotFoundException;
 import com.mlorenzo.spring5recipeapp.repositories.RecipeRepository;
 
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
+@AllArgsConstructor
 @Service
 public class RecipeServiceImpl implements RecipeService{
 	private final RecipeRepository recipeRepository;
 	private final RecipeCommandToRecipe recipeCommandToRecipe;
 	private final RecipeToRecipeCommand recipeToRecipeCommand;
-	
-	public RecipeServiceImpl(RecipeRepository recipeRepository, RecipeCommandToRecipe recipeCommandToRecipe, RecipeToRecipeCommand recipeToRecipeCommand) {
-		this.recipeRepository = recipeRepository;
-		this.recipeCommandToRecipe = recipeCommandToRecipe;
-		this.recipeToRecipeCommand =recipeToRecipeCommand;
-	}
 
 	@Override
 	public Set<RecipeCommand> getRecipes() {
@@ -35,17 +31,17 @@ public class RecipeServiceImpl implements RecipeService{
 		return recipeCommands;
 	}
 
-	
 	@Override
 	public RecipeCommand findRecipeCommandById(Long id) {
-		Recipe recipe = recipeRepository.findById(id).orElseThrow(() -> new NotFoundException("Recipe Not Found for id value: " + id));
+		Recipe recipe = recipeRepository.findById(id)
+				.orElseThrow(() -> new NotFoundException("Recipe Not Found for id value: " + id));
 		return recipeToRecipeCommand.convert(recipe);
 	}
 
 	@Override
 	public RecipeCommand saveRecipeCommand(RecipeCommand recipeCommand) {
-		Recipe detachedRecipe = recipeCommandToRecipe.convert(recipeCommand);
-		Recipe savedRecipe = recipeRepository.save(detachedRecipe);
+		Recipe recipe = recipeCommandToRecipe.convert(recipeCommand);
+		Recipe savedRecipe = recipeRepository.save(recipe);
 		log.debug("Saved Recipe Id: " + savedRecipe.getId());
 		return recipeToRecipeCommand.convert(savedRecipe);
 	}

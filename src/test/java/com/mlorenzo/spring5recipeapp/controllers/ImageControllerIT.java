@@ -11,7 +11,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -19,39 +18,31 @@ import static org.mockito.ArgumentMatchers.anyLong;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import com.mlorenzo.spring5recipeapp.commands.RecipeCommand;
 import com.mlorenzo.spring5recipeapp.services.ImageService;
 import com.mlorenzo.spring5recipeapp.services.RecipeService;
 
-//Anotación para poder usar Mockito en esta clase de pruebas
-@RunWith(MockitoJUnitRunner.class) // Otra opción a esta anotación es usar la expresión o línea "MockitoAnnotations.initMocks(this);" en el método "setUp"
-public class ImageControllerTest {
+@RunWith(SpringRunner.class)
+// Nota: Por defecto, esta anotación hace que también se procesen las plantillas(En nuestro caso, plantillas Thymeleaf)
+@WebMvcTest(controllers = ImageController.class)
+public class ImageControllerIT {
 	
-	@Mock // Crea una Mock del servicio "ImageService"
+	@MockBean // Crea una Mock del servicio "ImageService"  y lo inyecta en el contexto de Spring
 	ImageService imageService;
 	
-	@Mock // Crea una Mock del servicio "RecipeService"
+	@MockBean // Crea una Mock del servicio "RecipeService" y lo inyecta en el contexto de Spring
 	RecipeService recipeService;
 	
-	@InjectMocks // Esta anotación crea una instancia del controlador "ImageController" e inyecta los Mocks de los servicios "imageService" y "recipeService"
-	ImageController controller;
-	
+	@Autowired
 	MockMvc mockMvc;
-	 
-	@Before
-	public void setUp() throws Exception {
-	    mockMvc = MockMvcBuilders.standaloneSetup(controller)
-	    		.setControllerAdvice(new ControllerExceptionHandler())
-	    		.build();
-	}
 
     @Test
     public void getImageFormTest() throws Exception {
@@ -85,7 +76,7 @@ public class ImageControllerTest {
     	//given
         MockMultipartFile multipartFile =
                 new MockMultipartFile("imagefile", "testing.txt", "text/plain",
-                		"fake image text".getBytes());
+                        "Spring Framework Guru".getBytes());
         //when
         mockMvc.perform(multipart("/recipe/1/image").file(multipartFile))
         	//then

@@ -7,7 +7,6 @@ import java.io.InputStream;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.tomcat.util.http.fileupload.IOUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,18 +15,16 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.mlorenzo.spring5recipeapp.commands.RecipeCommand;
 import com.mlorenzo.spring5recipeapp.services.ImageService;
 import com.mlorenzo.spring5recipeapp.services.RecipeService;
 
+import lombok.RequiredArgsConstructor;
+
+@RequiredArgsConstructor
 @Controller
 public class ImageController {
-	
-	@Autowired
-	private ImageService imageService;
-	
-	@Autowired
-    private RecipeService recipeService;
+	private final ImageService imageService;
+    private final RecipeService recipeService;
 	
 	@GetMapping("recipe/{id}/image")
     public String showUploadForm(@PathVariable(name = "id") Long recipeId, Model model){
@@ -42,16 +39,11 @@ public class ImageController {
     }
     
     @GetMapping("recipe/{id}/recipeimage")
-    public void renderImageFromDB(@PathVariable Long id, HttpServletResponse response) throws IOException {
-        RecipeCommand recipeCommand = recipeService.findRecipeCommandById(id);
-        if (recipeCommand.getImage() != null) {
-            byte[] byteArray = new byte[recipeCommand.getImage().length];
-            int i = 0;
-            for (Byte wrappedByte: recipeCommand.getImage()){
-                byteArray[i++] = wrappedByte; //auto unboxing
-            }
+    public void renderImageFromDB(@PathVariable("id") Long recipeId, HttpServletResponse response) throws IOException {
+    	byte[] bytes = imageService.getImage(recipeId);
+        if (bytes != null) {
             response.setContentType("image/jpeg");
-            InputStream is = new ByteArrayInputStream(byteArray);
+            InputStream is = new ByteArrayInputStream(bytes);
             IOUtils.copy(is, response.getOutputStream());
         }
     }

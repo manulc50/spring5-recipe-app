@@ -78,6 +78,7 @@ public class RecipeCommandToRecipeTest {
         recipeCommand.getIngredients().add(ingredient2);
         //when
         Recipe recipe  = converter.convert(recipeCommand);
+        //then
         assertNotNull(recipe);
         assertEquals(RECIPE_ID, recipe.getId());
         assertEquals(COOK_TIME, recipe.getCookTime());

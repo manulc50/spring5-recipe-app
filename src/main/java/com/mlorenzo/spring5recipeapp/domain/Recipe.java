@@ -65,7 +65,8 @@ public class Recipe {
 	// Esta anotación es para objetos grandes. Si se trata de una propiedad de tipo String, la columna de la tabla correspondiente de la base de datos asociada a esta propiedad se creará de tipo CLOB para permitir almacenar cadenas de caracteres de más de 255 caracteres. Sin embargo, si esta anotación se usa sobre una propiedad de tipo Byte[], el tipo de dato para la columna de la tabla de la base de datos sera BLOB, que permite almacenar una gran cantidad de bytes, como por ejemplo, archivos multimedia
 	// En este caso queremos almacenar un archivo multimedia de tipo imagen, que son archivos con una gran cantidad de bytes. Por eso, es necesario establecer esta anotación en esta propiedad para que la columna de la tabla correspondiente en la base de datos asociada a esta propiedad se genere con el tipo BLOB, que es un tipo de dato que permite almacenar grandes cadenas de bytes
 	@Lob
-	private Byte[] image;
+	private byte[] image;
+	//private Byte[] image;
 	
 	// Relación uno a uno bidireccional con la clase entidad "Notes"
 	// Hacemos que todas las operaciones que se hagan sobre una entidad de esta clase se propaguen a la entidad relacionada de la clase "Notes"
@@ -88,21 +89,9 @@ public class Recipe {
 	@JoinTable(name = "recipe_categories", joinColumns = @JoinColumn(name = "recipe_id"), inverseJoinColumns = @JoinColumn(name = "category_id"))
 	private Set<Category> categories = new HashSet<Category>();
 	
-	// Utilizamos este método setter de esta clase entidad para establecer en un único punto en este método la relación bidireccional entre esta clase entidad y la clase entidad "Notes"
-	// De esta forma, nos ahorramos código a la hora de cargar datos para crear recetas
-	// La implementación de este setter sobrescribe a la implementación del setter de Lombok
-	public void setNotes(Notes notes) {
-		if(notes != null) {
-			this.notes = notes;
-			notes.setRecipe(this);
-		}
-	}
-	
-	// Creamos este método para establecer en un único punto en este método la relación bidireccional entre esta clase entidad y la clase entidad "Ingredient"
-	// De esta forma, nos ahorramos código a la hora de cargar datos para crear recetas
-	public Recipe addIngredient(Ingredient ingredient) {
-		ingredient.setRecipe(this);
-		this.ingredients.add(ingredient);
-		return this;
-	}
+	public Recipe addIngredient(Ingredient ingredient){
+        ingredient.setRecipe(this);
+        this.ingredients.add(ingredient);
+        return this;
+    }
 }

@@ -1,8 +1,7 @@
 package com.mlorenzo.spring5recipeapp.converters;
 
-import lombok.Synchronized;
+import lombok.RequiredArgsConstructor;
 import org.springframework.core.convert.converter.Converter;
-import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
 
 import com.mlorenzo.spring5recipeapp.commands.IngredientCommand;
@@ -12,16 +11,11 @@ import com.mlorenzo.spring5recipeapp.domain.Ingredient;
 // En este caso, pasamos los datos de objetos de tipo Ingredient a objetos de tipo IngredientCommand
 // La interfaz Converter de Spring Framework es una alternativa a usar la librería MapStruct
 
+@RequiredArgsConstructor
 @Component
 public class IngredientToIngredientCommand implements Converter<Ingredient, IngredientCommand> {
     private final UnitOfMeasureToUnitOfMeasureCommand uomConverter;
 
-    public IngredientToIngredientCommand(UnitOfMeasureToUnitOfMeasureCommand uomConverter) {
-        this.uomConverter = uomConverter;
-    }
-
-    @Synchronized
-    @Nullable
     @Override
     public IngredientCommand convert(Ingredient ingredient) {
         if (ingredient == null) {

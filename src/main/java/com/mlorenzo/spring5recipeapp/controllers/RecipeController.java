@@ -4,36 +4,28 @@ import java.util.Set;
 
 import javax.validation.Valid;
 
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.servlet.ModelAndView;
 
 import com.mlorenzo.spring5recipeapp.commands.CategoryCommand;
 import com.mlorenzo.spring5recipeapp.commands.RecipeCommand;
-import com.mlorenzo.spring5recipeapp.exceptions.NotFoundException;
 import com.mlorenzo.spring5recipeapp.services.CategoryService;
 import com.mlorenzo.spring5recipeapp.services.RecipeService;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
+@RequiredArgsConstructor
 @Controller
 public class RecipeController {
 	private final RecipeService recipeService;
 	private final CategoryService categoryService;
-	
-	public RecipeController(RecipeService recipeService,CategoryService categoryService) {
-		this.recipeService = recipeService;
-		this.categoryService = categoryService;
-	}
 	
 	//@RequestMapping(value = "/recipe/{recipeId}/show", method = RequestMethod.GET ) // Si no se indica el atributo "method" en esta anotación con el método de la petición http, por defecto es GET
 	@GetMapping("/recipe/{recipeId}/show") // Versión simplificada de la anotación @RequestMapping(value = "/recipe/{recipeId}/show", method = RequestMethod.GET)
@@ -68,9 +60,8 @@ public class RecipeController {
 	@PostMapping("/recipe") // Versión simplificada de la anotación @RequestMapping(value = "/recipe", method = RequestMethod.POST)
 	public String saveOrUpdate(@Valid @ModelAttribute("recipe") RecipeCommand recipeCommand, BindingResult bindingResult) {
 		if(bindingResult.hasErrors()){
-            bindingResult.getAllErrors().forEach(objectError -> {
-                log.debug(objectError.toString());
-            });
+			if(log.isDebugEnabled())
+	            bindingResult.getAllErrors().forEach(objectError -> log.debug(objectError.toString()));
             return "recipe/recipeForm";
         }
 		RecipeCommand savedRecipeCommand = recipeService.saveRecipeCommand(recipeCommand);
@@ -84,16 +75,5 @@ public class RecipeController {
 		recipeService.deleteById(id);
 		return "redirect:/";
 	}
-	
-	@ResponseStatus(HttpStatus.NOT_FOUND)
-	@ExceptionHandler(NotFoundException.class)
-    public ModelAndView handleNotFound(NotFoundException exception){
-        log.error("Handling Not Found Exception");
-        log.error(exception.getMessage());
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("404error");
-        modelAndView.addObject("exception", exception);
-        return modelAndView;
-    }
 
 }

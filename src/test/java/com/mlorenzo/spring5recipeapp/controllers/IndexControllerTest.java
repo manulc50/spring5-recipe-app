@@ -47,8 +47,11 @@ public class IndexControllerTest {
 	
 	@Test
 	public void getIndexPageMockMvcTest() throws Exception {
+		//given
 		MockMvc mockMvc = MockMvcBuilders.standaloneSetup(indexController).build();
+		//when
 		mockMvc.perform(get("/"))
+				//then
 			   .andExpect(status().isOk())
 			   .andExpect(view().name("index"))
 			   .andExpect(model().attributeExists("recipes"));

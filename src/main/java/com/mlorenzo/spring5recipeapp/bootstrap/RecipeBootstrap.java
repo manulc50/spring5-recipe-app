@@ -1,5 +1,6 @@
 package com.mlorenzo.spring5recipeapp.bootstrap;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.context.ApplicationListener;
@@ -24,6 +25,7 @@ import java.util.Optional;
 // La interfaz CommandLineRunner es propia de Spring Boot
 
 @Slf4j
+@RequiredArgsConstructor
 @Profile("default") // Esta clase sólo se tendrá en cuenta cuando arranque esta aplicación Spring Boot con el perfil por defecto o default. La idea es que la carga de datos en las tablas de la base de datos que realiza esta clase únicamente se haga con el perfil por defecto o default que es el perfil que usa H2 como base de datos, ya que los perfiles "dev" y "prod" utilizan MySQL como base de datos y tienen otra clase Bootstrap con otra carga de datos en las tablas de la base de datos distinta
 @Component
 public class RecipeBootstrap implements ApplicationListener<ContextRefreshedEvent> {
@@ -31,20 +33,14 @@ public class RecipeBootstrap implements ApplicationListener<ContextRefreshedEven
     private final RecipeRepository recipeRepository;
     private final UnitOfMeasureRepository unitOfMeasureRepository;
 
-    public RecipeBootstrap(CategoryRepository categoryRepository, RecipeRepository recipeRepository, UnitOfMeasureRepository unitOfMeasureRepository) {
-        this.categoryRepository = categoryRepository;
-        this.recipeRepository = recipeRepository;
-        this.unitOfMeasureRepository = unitOfMeasureRepository;
-    }
-
     @Transactional // Creamos una transacción sobre este método porque realiza inserciones de nuevos registros sobre tablas de la base de datos, es decir, porque manipula tablas de la base de datos añadiendo nuevos datos
     @Override
     public void onApplicationEvent(ContextRefreshedEvent event) {
-        recipeRepository.saveAll(getRecipes());
+        loadRecipes();
         log.debug("Bootstrap Data Loaded");
     }
 
-    private List<Recipe> getRecipes() {
+    private void loadRecipes() {
         List<Recipe> recipes = new ArrayList<>(2);
         //get UOMs
         Optional<UnitOfMeasure> eachUomOptional = unitOfMeasureRepository.findByDescription("Each");
@@ -184,6 +180,6 @@ public class RecipeBootstrap implements ApplicationListener<ContextRefreshedEven
         tacosRecipe.setServings(5);
         tacosRecipe.setSource("Simply Recipes");
         recipes.add(tacosRecipe);
-        return recipes;
+        recipeRepository.saveAll(recipes);
     }
 }

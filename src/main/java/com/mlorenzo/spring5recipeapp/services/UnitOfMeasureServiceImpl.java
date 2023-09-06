@@ -10,15 +10,13 @@ import com.mlorenzo.spring5recipeapp.commands.UnitOfMeasureCommand;
 import com.mlorenzo.spring5recipeapp.converters.UnitOfMeasureToUnitOfMeasureCommand;
 import com.mlorenzo.spring5recipeapp.repositories.UnitOfMeasureRepository;
 
+import lombok.AllArgsConstructor;
+
+@AllArgsConstructor
 @Service
 public class UnitOfMeasureServiceImpl implements UnitOfMeasureService{
 	private final UnitOfMeasureRepository unitOfMeasureRepository;
 	private final UnitOfMeasureToUnitOfMeasureCommand unitOfMeasureToUnitOfMeasureCommand;
-	
-	public UnitOfMeasureServiceImpl(UnitOfMeasureRepository unitOfMeasureRepository,UnitOfMeasureToUnitOfMeasureCommand unitOfMeasureToUnitOfMeasureCommand) {
-		this.unitOfMeasureRepository = unitOfMeasureRepository;
-		this.unitOfMeasureToUnitOfMeasureCommand = unitOfMeasureToUnitOfMeasureCommand;
-	}
 
 	@Override
 	public Set<UnitOfMeasureCommand> listAllUoms() {

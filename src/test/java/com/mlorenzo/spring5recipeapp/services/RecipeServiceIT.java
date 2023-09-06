@@ -10,7 +10,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.mlorenzo.spring5recipeapp.commands.RecipeCommand;
-import com.mlorenzo.spring5recipeapp.converters.RecipeCommandToRecipe;
 import com.mlorenzo.spring5recipeapp.converters.RecipeToRecipeCommand;
 import com.mlorenzo.spring5recipeapp.domain.Recipe;
 import com.mlorenzo.spring5recipeapp.repositories.RecipeRepository;
@@ -27,9 +26,6 @@ public class RecipeServiceIT {
     RecipeRepository recipeRepository;
 
     @Autowired
-    RecipeCommandToRecipe recipeCommandToRecipe;
-
-    @Autowired
     RecipeToRecipeCommand recipeToRecipeCommand;
 
     // Usamos la anotación @Transactional para que todas las acciones que se hagan sobre la base de datos en este método de prueba se hagan bajo una misma transacción
@@ -43,8 +39,8 @@ public class RecipeServiceIT {
         Iterable<Recipe> recipes = recipeRepository.findAll();
         Recipe testRecipe = recipes.iterator().next();
         RecipeCommand testRecipeCommand = recipeToRecipeCommand.convert(testRecipe);
-        //when
         testRecipeCommand.setDescription(NEW_DESCRIPTION);
+        //when
         RecipeCommand savedRecipeCommand = recipeService.saveRecipeCommand(testRecipeCommand);
         //then
         assertEquals(NEW_DESCRIPTION, savedRecipeCommand.getDescription());

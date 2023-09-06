@@ -12,15 +12,13 @@ import com.mlorenzo.spring5recipeapp.domain.Category;
 import com.mlorenzo.spring5recipeapp.exceptions.NotFoundException;
 import com.mlorenzo.spring5recipeapp.repositories.CategoryRepository;
 
+import lombok.AllArgsConstructor;
+
+@AllArgsConstructor
 @Service
 public class CategoryServiceImpl implements CategoryService{
 	private final CategoryRepository categoryRepository;
 	private final CategoryToCategoryCommand categoryToCategoryCommand;
-	
-	public CategoryServiceImpl(CategoryRepository categoryRepository, CategoryToCategoryCommand categoryToCategoryCommand) {
-		this.categoryRepository = categoryRepository;
-		this.categoryToCategoryCommand = categoryToCategoryCommand;
-	}
 
 	@Override
 	public Set<CategoryCommand> getCategories() {

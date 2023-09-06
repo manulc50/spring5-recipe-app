@@ -1,7 +1,6 @@
 package com.mlorenzo.spring5recipeapp.commands;
 
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.HashSet;
@@ -20,11 +19,12 @@ import com.mlorenzo.spring5recipeapp.domain.Difficulty;
 
 @Getter
 @Setter
-@NoArgsConstructor
 public class RecipeCommand {
     private Long id;
     
-    @NotBlank
+    // Nota: Los mensajes de validación del archivo de propiedades "messages.properties" tienen preferencia sobre aquellos que se
+    // pongan en estas anotaciones de validación mediante el atributo "message"
+    @NotBlank(message = "Description is required")
     @Size(min = 3, max = 255)
     private String description;
     
@@ -48,7 +48,7 @@ public class RecipeCommand {
     @NotBlank
     private String directions;
     
-    private Byte[] image;
+    private byte[] image;
     private Set<IngredientCommand> ingredients = new HashSet<>();
     private Difficulty difficulty;
     private NotesCommand notes;

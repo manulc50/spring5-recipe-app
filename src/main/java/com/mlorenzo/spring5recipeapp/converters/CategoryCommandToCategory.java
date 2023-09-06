@@ -1,8 +1,6 @@
 package com.mlorenzo.spring5recipeapp.converters;
 
-import lombok.Synchronized;
 import org.springframework.core.convert.converter.Converter;
-import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
 
 import com.mlorenzo.spring5recipeapp.commands.CategoryCommand;
@@ -15,8 +13,6 @@ import com.mlorenzo.spring5recipeapp.domain.Category;
 @Component
 public class CategoryCommandToCategory implements Converter<CategoryCommand, Category>{
 
-    @Synchronized // Spring no garantiza la seguridad del hilo. Por lo tanto, usamos esta anotación de Lombok para que el método esté sincronizado sin usar hilos
-    @Nullable
     @Override
     public Category convert(CategoryCommand source) {
         if (source == null) {
@@ -24,7 +20,7 @@ public class CategoryCommandToCategory implements Converter<CategoryCommand, Cat
         }
         final Category category = new Category();
         category.setId(source.getId());
-        category.setDescription(source.getDescription());
         return category;
     }
+	
 }

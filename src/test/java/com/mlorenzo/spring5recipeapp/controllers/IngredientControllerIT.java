@@ -15,38 +15,33 @@ import java.util.Set;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.any;
 
-import org.junit.Before;
 import org.junit.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import com.mlorenzo.spring5recipeapp.commands.IngredientCommand;
+import com.mlorenzo.spring5recipeapp.commands.UnitOfMeasureCommand;
 import com.mlorenzo.spring5recipeapp.services.IngredientService;
 import com.mlorenzo.spring5recipeapp.services.UnitOfMeasureService;
 
-public class IngredientControllerTest {
+@RunWith(SpringRunner.class)
+// Nota: Por defecto, esta anotación hace que también se procesen las plantillas(En nuestro caso, plantillas Thymeleaf)
+@WebMvcTest(controllers = IngredientController.class)
+public class IngredientControllerIT {
 	
-	@Mock // Crea una Mock del servicio "ingredientService"
+	@MockBean // Crea una Mock del servicio "ingredientService" y lo inyecta en el contexto de Spring
     IngredientService ingredientService;
 	
-	@Mock // Crea una Mock del servicio "unitOfMeasureService"
+	@MockBean // Crea una Mock del servicio "unitOfMeasureService" y lo inyecta en el contexto de Spring
 	UnitOfMeasureService unitOfMeasureService;
 
-	@InjectMocks // Esta anotación crea una instancia del controlador "IngredientController" e inyecta los Mocks de los servicios "recipeService","ingredientService" y "unitOfMeasureService"
-    IngredientController controller;
-
+	@Autowired
     MockMvc mockMvc;
-
-    @Before
-    public void setUp() throws Exception {
-    	//Para poder usar Mockito en esta clase de pruebas
-        MockitoAnnotations.initMocks(this); // Otra opción a esta línea es anotar la clase con @ExtendWith(MockitoExtension.class)
-        mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
-    }
 
     @Test
     public void listIngredientsTest() throws Exception {
@@ -68,6 +63,8 @@ public class IngredientControllerTest {
     public void showIngredientTest() throws Exception {
         //given
         IngredientCommand ingredientCommand = new IngredientCommand();
+        UnitOfMeasureCommand uomCommand = new UnitOfMeasureCommand();
+        ingredientCommand.setUom(uomCommand);
         when(ingredientService.findByRecipeIdAndIngredientId(anyLong(), anyLong())).thenReturn(ingredientCommand);
         //when
         mockMvc.perform(get("/recipe/1/ingredient/2/show"))
@@ -95,7 +92,6 @@ public class IngredientControllerTest {
             .andExpect(model().attributeExists("ingredient"))
             .andExpect(model().attributeExists("uomList"));
         verify(ingredientService, times(1)).createNewIngredient(anyLong());
-
     }
     
     @Test
@@ -103,7 +99,7 @@ public class IngredientControllerTest {
         //given
         IngredientCommand ingredientCommand = new IngredientCommand();
         when(ingredientService.findByRecipeIdAndIngredientId(anyLong(), anyLong())).thenReturn(ingredientCommand);
-        // En realidad no hace falta este "when" porque, por defecto, Mockito crea instancias de las colecciones
+        // En realidad no hace falta este when porque, por defecto, Mockito crea instancias de las colecciones
         when(unitOfMeasureService.listAllUoms()).thenReturn(new HashSet<>());
         //when
         mockMvc.perform(get("/recipe/1/ingredient/2/update"))
